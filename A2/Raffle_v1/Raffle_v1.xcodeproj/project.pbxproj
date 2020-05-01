@@ -1,0 +1,619 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C226643F245C05EE00E446C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C226643E245C05EE00E446C7 /* AppDelegate.swift */; };
+		C2266441245C05EE00E446C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266440245C05EE00E446C7 /* SceneDelegate.swift */; };
+		C2266443245C05EE00E446C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266442245C05EE00E446C7 /* ViewController.swift */; };
+		C2266446245C05EE00E446C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2266444245C05EE00E446C7 /* Main.storyboard */; };
+		C2266448245C05F100E446C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2266447245C05F100E446C7 /* Assets.xcassets */; };
+		C226644B245C05F100E446C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2266449245C05F100E446C7 /* LaunchScreen.storyboard */; };
+		C2266456245C05F100E446C7 /* Raffle_v1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266455245C05F100E446C7 /* Raffle_v1Tests.swift */; };
+		C2266461245C05F100E446C7 /* Raffle_v1UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266460245C05F100E446C7 /* Raffle_v1UITests.swift */; };
+		C226646F245C068800E446C7 /* SQLiteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C226646E245C068800E446C7 /* SQLiteDatabase.swift */; };
+		C2266471245C0F4000E446C7 /* Raffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266470245C0F4000E446C7 /* Raffle.swift */; };
+		C2266473245C1EE200E446C7 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266472245C1EE200E446C7 /* Ticket.swift */; };
+		C2266475245C1F0100E446C7 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266474245C1F0100E446C7 /* Customer.swift */; };
+		C2266477245C43B700E446C7 /* RaffleUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266476245C43B700E446C7 /* RaffleUITableViewCell.swift */; };
+		C2266479245C456100E446C7 /* RaffleUITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266478245C456100E446C7 /* RaffleUITableViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C2266452245C05F100E446C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2266433245C05EE00E446C7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C226643A245C05EE00E446C7;
+			remoteInfo = Raffle_v1;
+		};
+		C226645D245C05F100E446C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2266433245C05EE00E446C7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C226643A245C05EE00E446C7;
+			remoteInfo = Raffle_v1;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C226643B245C05EE00E446C7 /* Raffle_v1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Raffle_v1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C226643E245C05EE00E446C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C2266440245C05EE00E446C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		C2266442245C05EE00E446C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C2266445245C05EE00E446C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C2266447245C05F100E446C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C226644A245C05F100E446C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C226644C245C05F100E446C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C2266451245C05F100E446C7 /* Raffle_v1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Raffle_v1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2266455245C05F100E446C7 /* Raffle_v1Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Raffle_v1Tests.swift; sourceTree = "<group>"; };
+		C2266457245C05F100E446C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C226645C245C05F100E446C7 /* Raffle_v1UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Raffle_v1UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2266460245C05F100E446C7 /* Raffle_v1UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Raffle_v1UITests.swift; sourceTree = "<group>"; };
+		C2266462245C05F100E446C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C226646E245C068800E446C7 /* SQLiteDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SQLiteDatabase.swift; path = "../../../../KIT301/A3/Repo/KIT305-607 Tutorial - Week 05 - iOS/Tutorial5/SQLiteDatabase.swift"; sourceTree = "<group>"; };
+		C2266470245C0F4000E446C7 /* Raffle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Raffle.swift; sourceTree = "<group>"; };
+		C2266472245C1EE200E446C7 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
+		C2266474245C1F0100E446C7 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
+		C2266476245C43B700E446C7 /* RaffleUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaffleUITableViewCell.swift; sourceTree = "<group>"; };
+		C2266478245C456100E446C7 /* RaffleUITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaffleUITableViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C2266438245C05EE00E446C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C226644E245C05F100E446C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2266459245C05F100E446C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C2266432245C05EE00E446C7 = {
+			isa = PBXGroup;
+			children = (
+				C226643D245C05EE00E446C7 /* Raffle_v1 */,
+				C2266454245C05F100E446C7 /* Raffle_v1Tests */,
+				C226645F245C05F100E446C7 /* Raffle_v1UITests */,
+				C226643C245C05EE00E446C7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C226643C245C05EE00E446C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C226643B245C05EE00E446C7 /* Raffle_v1.app */,
+				C2266451245C05F100E446C7 /* Raffle_v1Tests.xctest */,
+				C226645C245C05F100E446C7 /* Raffle_v1UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C226643D245C05EE00E446C7 /* Raffle_v1 */ = {
+			isa = PBXGroup;
+			children = (
+				C226643E245C05EE00E446C7 /* AppDelegate.swift */,
+				C2266440245C05EE00E446C7 /* SceneDelegate.swift */,
+				C226646E245C068800E446C7 /* SQLiteDatabase.swift */,
+				C2266470245C0F4000E446C7 /* Raffle.swift */,
+				C2266472245C1EE200E446C7 /* Ticket.swift */,
+				C2266474245C1F0100E446C7 /* Customer.swift */,
+				C2266442245C05EE00E446C7 /* ViewController.swift */,
+				C2266444245C05EE00E446C7 /* Main.storyboard */,
+				C2266476245C43B700E446C7 /* RaffleUITableViewCell.swift */,
+				C2266478245C456100E446C7 /* RaffleUITableViewController.swift */,
+				C2266447245C05F100E446C7 /* Assets.xcassets */,
+				C2266449245C05F100E446C7 /* LaunchScreen.storyboard */,
+				C226644C245C05F100E446C7 /* Info.plist */,
+			);
+			path = Raffle_v1;
+			sourceTree = "<group>";
+		};
+		C2266454245C05F100E446C7 /* Raffle_v1Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C2266455245C05F100E446C7 /* Raffle_v1Tests.swift */,
+				C2266457245C05F100E446C7 /* Info.plist */,
+			);
+			path = Raffle_v1Tests;
+			sourceTree = "<group>";
+		};
+		C226645F245C05F100E446C7 /* Raffle_v1UITests */ = {
+			isa = PBXGroup;
+			children = (
+				C2266460245C05F100E446C7 /* Raffle_v1UITests.swift */,
+				C2266462245C05F100E446C7 /* Info.plist */,
+			);
+			path = Raffle_v1UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C226643A245C05EE00E446C7 /* Raffle_v1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C2266465245C05F100E446C7 /* Build configuration list for PBXNativeTarget "Raffle_v1" */;
+			buildPhases = (
+				C2266437245C05EE00E446C7 /* Sources */,
+				C2266438245C05EE00E446C7 /* Frameworks */,
+				C2266439245C05EE00E446C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Raffle_v1;
+			productName = Raffle_v1;
+			productReference = C226643B245C05EE00E446C7 /* Raffle_v1.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C2266450245C05F100E446C7 /* Raffle_v1Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C2266468245C05F100E446C7 /* Build configuration list for PBXNativeTarget "Raffle_v1Tests" */;
+			buildPhases = (
+				C226644D245C05F100E446C7 /* Sources */,
+				C226644E245C05F100E446C7 /* Frameworks */,
+				C226644F245C05F100E446C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C2266453245C05F100E446C7 /* PBXTargetDependency */,
+			);
+			name = Raffle_v1Tests;
+			productName = Raffle_v1Tests;
+			productReference = C2266451245C05F100E446C7 /* Raffle_v1Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C226645B245C05F100E446C7 /* Raffle_v1UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C226646B245C05F100E446C7 /* Build configuration list for PBXNativeTarget "Raffle_v1UITests" */;
+			buildPhases = (
+				C2266458245C05F100E446C7 /* Sources */,
+				C2266459245C05F100E446C7 /* Frameworks */,
+				C226645A245C05F100E446C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C226645E245C05F100E446C7 /* PBXTargetDependency */,
+			);
+			name = Raffle_v1UITests;
+			productName = Raffle_v1UITests;
+			productReference = C226645C245C05F100E446C7 /* Raffle_v1UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C2266433245C05EE00E446C7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1140;
+				LastUpgradeCheck = 1140;
+				ORGANIZATIONNAME = "University of Tasmania";
+				TargetAttributes = {
+					C226643A245C05EE00E446C7 = {
+						CreatedOnToolsVersion = 11.4.1;
+					};
+					C2266450245C05F100E446C7 = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = C226643A245C05EE00E446C7;
+					};
+					C226645B245C05F100E446C7 = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = C226643A245C05EE00E446C7;
+					};
+				};
+			};
+			buildConfigurationList = C2266436245C05EE00E446C7 /* Build configuration list for PBXProject "Raffle_v1" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C2266432245C05EE00E446C7;
+			productRefGroup = C226643C245C05EE00E446C7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C226643A245C05EE00E446C7 /* Raffle_v1 */,
+				C2266450245C05F100E446C7 /* Raffle_v1Tests */,
+				C226645B245C05F100E446C7 /* Raffle_v1UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C2266439245C05EE00E446C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C226644B245C05F100E446C7 /* LaunchScreen.storyboard in Resources */,
+				C2266448245C05F100E446C7 /* Assets.xcassets in Resources */,
+				C2266446245C05EE00E446C7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C226644F245C05F100E446C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C226645A245C05F100E446C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C2266437245C05EE00E446C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2266443245C05EE00E446C7 /* ViewController.swift in Sources */,
+				C2266475245C1F0100E446C7 /* Customer.swift in Sources */,
+				C2266473245C1EE200E446C7 /* Ticket.swift in Sources */,
+				C226643F245C05EE00E446C7 /* AppDelegate.swift in Sources */,
+				C2266471245C0F4000E446C7 /* Raffle.swift in Sources */,
+				C226646F245C068800E446C7 /* SQLiteDatabase.swift in Sources */,
+				C2266441245C05EE00E446C7 /* SceneDelegate.swift in Sources */,
+				C2266479245C456100E446C7 /* RaffleUITableViewController.swift in Sources */,
+				C2266477245C43B700E446C7 /* RaffleUITableViewCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C226644D245C05F100E446C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2266456245C05F100E446C7 /* Raffle_v1Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2266458245C05F100E446C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2266461245C05F100E446C7 /* Raffle_v1UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C2266453245C05F100E446C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C226643A245C05EE00E446C7 /* Raffle_v1 */;
+			targetProxy = C2266452245C05F100E446C7 /* PBXContainerItemProxy */;
+		};
+		C226645E245C05F100E446C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C226643A245C05EE00E446C7 /* Raffle_v1 */;
+			targetProxy = C226645D245C05F100E446C7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C2266444245C05EE00E446C7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C2266445245C05EE00E446C7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C2266449245C05F100E446C7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C226644A245C05F100E446C7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C2266463245C05F100E446C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C2266464245C05F100E446C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C2266466245C05F100E446C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 892DZ3A58K;
+				INFOPLIST_FILE = Raffle_v1/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C2266467245C05F100E446C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 892DZ3A58K;
+				INFOPLIST_FILE = Raffle_v1/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C2266469245C05F100E446C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 892DZ3A58K;
+				INFOPLIST_FILE = Raffle_v1Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v1Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Raffle_v1.app/Raffle_v1";
+			};
+			name = Debug;
+		};
+		C226646A245C05F100E446C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 892DZ3A58K;
+				INFOPLIST_FILE = Raffle_v1Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v1Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Raffle_v1.app/Raffle_v1";
+			};
+			name = Release;
+		};
+		C226646C245C05F100E446C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 892DZ3A58K;
+				INFOPLIST_FILE = Raffle_v1UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v1UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Raffle_v1;
+			};
+			name = Debug;
+		};
+		C226646D245C05F100E446C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 892DZ3A58K;
+				INFOPLIST_FILE = Raffle_v1UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v1UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Raffle_v1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C2266436245C05EE00E446C7 /* Build configuration list for PBXProject "Raffle_v1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2266463245C05F100E446C7 /* Debug */,
+				C2266464245C05F100E446C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C2266465245C05F100E446C7 /* Build configuration list for PBXNativeTarget "Raffle_v1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2266466245C05F100E446C7 /* Debug */,
+				C2266467245C05F100E446C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C2266468245C05F100E446C7 /* Build configuration list for PBXNativeTarget "Raffle_v1Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2266469245C05F100E446C7 /* Debug */,
+				C226646A245C05F100E446C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C226646B245C05F100E446C7 /* Build configuration list for PBXNativeTarget "Raffle_v1UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C226646C245C05F100E446C7 /* Debug */,
+				C226646D245C05F100E446C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C2266433245C05EE00E446C7 /* Project object */;
+}
