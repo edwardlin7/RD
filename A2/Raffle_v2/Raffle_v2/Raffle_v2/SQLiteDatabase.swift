@@ -26,7 +26,7 @@ class SQLiteDatabase
      
         WARNING: DOING THIS WILL WIPE YOUR DATA, unless you modify how updateDatabase() works.
      */
-    private let DATABASE_VERSION = 4
+    private let DATABASE_VERSION = 5
     
     
     
@@ -334,7 +334,9 @@ class SQLiteDatabase
                 Name CHAR(255),
                 Description CHAR(255),
                 Cover TEXT,
-                Amount INTEGER
+                Amount INTEGER,
+                Price INTEGER,
+                Sold_amount
             );
         """
         let createTicketTableQuery =
@@ -343,7 +345,6 @@ class SQLiteDatabase
                 ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 Name CHAR(255),
                 Ticket_number INTEGER,
-                Price INTEGER,
                 Datetime CHAR(255),
                 Customer_name CHAR(255)
             );
@@ -362,24 +363,25 @@ class SQLiteDatabase
     }
     
     func insertRaffle(raffle:Raffle){
-        let insertStatementQuery = "INSERT INTO Raffle (Name, Description, Cover, Amount) VALUES (?,?,?,?);"
+        let insertStatementQuery = "INSERT INTO Raffle (Name, Description, Cover, Amount, Price, Sold_amount) VALUES (?,?,?,?,?,?);"
         
         insertWithQuery(insertStatementQuery, bindingFunction: { (insertStatement) in
             sqlite3_bind_text(insertStatement, 1, NSString(string: raffle.name).utf8String, -1, nil)
             sqlite3_bind_text(insertStatement, 2, NSString(string: raffle.description).utf8String, -1, nil)
             sqlite3_bind_text(insertStatement, 3, NSString(string: raffle.cover).utf8String, -1, nil)
             sqlite3_bind_int(insertStatement, 4, raffle.amount)
+            sqlite3_bind_int(insertStatement, 5, raffle.price)
+            sqlite3_bind_int(insertStatement, 6, raffle.sold_amount)
          })
     }
     
     func insertTicket(ticket:Ticket){
-        let insertStatementQuery = "INSERT INTO Ticket (Name, Ticket_number, Price, Datetime, Customer_name) VALUES (?,?,?,?,?);"
+        let insertStatementQuery = "INSERT INTO Ticket (Name, Ticket_number, Datetime, Customer_name) VALUES (?,?,?,?);"
         
         insertWithQuery(insertStatementQuery, bindingFunction: { (insertStatement) in
             sqlite3_bind_text(insertStatement, 1, NSString(string: ticket.name).utf8String, -1, nil)
             sqlite3_bind_int(insertStatement, 2, ticket.ticket_number)
-            sqlite3_bind_int(insertStatement, 3, ticket.price)
-            sqlite3_bind_text(insertStatement, 4, NSString(string: ticket.datetime).utf8String, -1, nil)
+            sqlite3_bind_text(insertStatement, 3, NSString(string: ticket.datetime).utf8String, -1, nil)
             sqlite3_bind_text(insertStatement, 4, NSString(string: ticket.customer_name).utf8String, -1, nil)
          })
     }
@@ -404,7 +406,9 @@ class SQLiteDatabase
                        name: String(cString:sqlite3_column_text(row, 1)),
                        description: String(cString:sqlite3_column_text(row, 2)),
                        cover: String(cString:sqlite3_column_text(row, 3)),
-                       amount:sqlite3_column_int(row, 4)
+                       amount:sqlite3_column_int(row, 4),
+                       price:sqlite3_column_int(row, 5),
+                       sold_amount:sqlite3_column_int(row, 6)
                        )//add it to the result array
                    result += [raffleArray]
         })
@@ -427,7 +431,9 @@ class SQLiteDatabase
                 name: String(cString:sqlite3_column_text(row, 1)),
                 description: String(cString:sqlite3_column_text(row, 2)),
                 cover: String(cString:sqlite3_column_text(row, 3)),
-                amount:sqlite3_column_int(row, 4)
+                amount:sqlite3_column_int(row, 4),
+                price:sqlite3_column_int(row, 5),
+                sold_amount:sqlite3_column_int(row, 6)
                 )//add it to the result array
             _result += [raffleArray]
             result = _result
@@ -440,7 +446,6 @@ class SQLiteDatabase
                 ID: sqlite3_column_int(row, 0),
                 name: String(cString:sqlite3_column_text(row, 1)),
                 ticket_number: sqlite3_column_int(row, 2),
-                price: sqlite3_column_int(row, 3),
                 datetime: String(cString:sqlite3_column_text(row, 4)),
                 customer_name: String(cString:sqlite3_column_text(row, 5))
                 )//add it to the result array

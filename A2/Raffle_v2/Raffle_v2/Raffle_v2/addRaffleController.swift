@@ -12,7 +12,7 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
 
     @IBOutlet var raffleName: UITextField!
     
-    @IBOutlet var raffleDescription: UITextField!
+    @IBOutlet var raffleDescription: UITextView!
     
     @IBOutlet var raffleCover: UIImageView!
     
@@ -22,10 +22,36 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewInit()
 
         // Do any additional setup after loading the view.
     }
     
+    func viewInit(){
+        
+        raffleName.layer.borderWidth = 1
+        raffleName.layer.borderColor = UIColor.gray.cgColor
+        raffleDescription.layer.borderWidth = 1
+        raffleDescription.layer.borderColor = UIColor.gray.cgColor
+        ticketPrice.layer.borderWidth = 1
+        ticketPrice.layer.borderColor = UIColor.gray.cgColor
+        raffleAmount.layer.borderWidth = 1
+        raffleAmount.layer.borderColor = UIColor.gray.cgColor
+        
+        let image = UIImage(named: "raffleCover")
+        raffleCover.image = image
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        raffleName.resignFirstResponder()
+        raffleDescription.resignFirstResponder()
+        ticketPrice.resignFirstResponder()
+        raffleAmount.resignFirstResponder()
+        
+    }
     
     @IBAction func addCoverBtn(_ sender: UIButton) {
         
@@ -59,6 +85,7 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
         
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         
+        raffleCover.image = nil
         raffleCover.image = image
         
         picker.dismiss(animated: true, completion: nil)
@@ -72,8 +99,34 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
     }
     
     @IBAction func confirmAddRaffle(_ sender: UIButton) {
+        
+        let raffleNameInput = raffleName.text!
+        let raffleDescriptionInput = raffleDescription.text!
+        let raffleCoverInput = (raffleCover.image?.jpegData(compressionQuality: 0.3)?.base64EncodedString())!
+        let raffleAmountInput = raffleAmount.text!
+        let rafflePriceInput = ticketPrice.text!
+        
+        let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
+        
+        database.insertRaffle(raffle: Raffle(
+            name:raffleNameInput,
+            description:raffleDescriptionInput,
+            cover:raffleCoverInput,
+            amount:Int32(raffleAmountInput) ?? 0,
+            price:Int32(rafflePriceInput) ?? 0,
+            sold_amount:0
+        ))
+        
+        let confirmAlert = UIAlertController(title: "Confirmation", message: "A new raffle has been created!", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "OK", style: .default){ (action) in
+        self.performSegue(withIdentifier: "addRaffleSegue", sender: action)
+        }
+        
+        confirmAlert.addAction(confirmAction)
+        present(confirmAlert, animated: true, completion: nil)
     }
-    
+        
     
 
     /*

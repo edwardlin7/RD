@@ -19,31 +19,40 @@ class ViewController: UIViewController {
         
         let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
         
-        
-        database.insertRaffle(raffle: Raffle(
-            name:"Olympics 2020",
-            description:"This is a cancelled Olympics",
-            cover:"This is a cover",
-            amount:1000))
-        
-        database.insertRaffle(raffle: Raffle(
-            name:"World Cup 2022",
-            description:"This is a normal World Cup",
-            cover:"This is another cover",
-            amount:500))
-        
-        database.insertRaffle(raffle: Raffle(
-            name:"Kingston Open 2045",
-            description:"This is a fake game",
-            cover:"This is another cover again",
-            amount:433))
-        
-        
-        
         //database.deleteAll()
-        
         raffles = database.selectAllRaffles()
-        print(raffles)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if segue.identifier == "ShowEditRaffleSegue" {
+            
+            guard let editRaffleController = segue.destination as? editRaffleController else{
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let raffleCell = sender as? raffleCell else{
+                fatalError("Unexpected sender: \(String(describing: sender))")
+            }
+            
+            guard let indexPath = raffleTableView.indexPath(for: raffleCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            
+            let selectedRaffle = raffles[indexPath.row]
+            editRaffleController.raffle = selectedRaffle
+            
+        }
+    }
+    
+    func decodeImage(imageBase64:String) -> UIImage {
+        
+        let dataDecoded:NSData = NSData(base64Encoded: imageBase64, options: NSData.Base64DecodingOptions(rawValue: 0))!
+        let decodedImage:UIImage = UIImage(data: dataDecoded as Data)!
+        
+        return decodedImage
+        
     }
 
 
@@ -65,12 +74,16 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
         
         let raffle = raffles[indexPath.row]
         
+        let image = decodeImage(imageBase64: raffle.cover)
+        
         cell?.cellDelegate = self
         cell?.index = indexPath
         cell?.raffleName.text = raffle.name
+        cell?.raffleCover.image = image
         
         return cell!
     }
+    
 }
 
 extension ViewController: TableViewRaffle{

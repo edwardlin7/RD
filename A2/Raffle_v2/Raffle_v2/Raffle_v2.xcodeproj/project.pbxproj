@@ -21,6 +21,7 @@
 		C22664C1245C668500E446C7 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22664C0245C668500E446C7 /* Customer.swift */; };
 		C22664C3245C70EC00E446C7 /* raffleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22664C2245C70EC00E446C7 /* raffleCell.swift */; };
 		C22664C9245D66E700E446C7 /* addRaffleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22664C8245D66E700E446C7 /* addRaffleController.swift */; };
+		C22664CB245DCBA700E446C7 /* editRaffleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22664CA245DCBA700E446C7 /* editRaffleController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		C22664C0245C668500E446C7 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		C22664C2245C70EC00E446C7 /* raffleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = raffleCell.swift; sourceTree = "<group>"; };
 		C22664C8245D66E700E446C7 /* addRaffleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addRaffleController.swift; sourceTree = "<group>"; };
+		C22664CA245DCBA700E446C7 /* editRaffleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = editRaffleController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				C226648C245C5F7200E446C7 /* ViewController.swift */,
 				C22664C2245C70EC00E446C7 /* raffleCell.swift */,
 				C226648E245C5F7200E446C7 /* Main.storyboard */,
+				C22664CA245DCBA700E446C7 /* editRaffleController.swift */,
 				C22664C8245D66E700E446C7 /* addRaffleController.swift */,
 				C22664BE245C667400E446C7 /* Ticket.swift */,
 				C22664C0245C668500E446C7 /* Customer.swift */,
@@ -278,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C226648D245C5F7200E446C7 /* ViewController.swift in Sources */,
+				C22664CB245DCBA700E446C7 /* editRaffleController.swift in Sources */,
 				C22664C1245C668500E446C7 /* Customer.swift in Sources */,
 				C22664C9245D66E700E446C7 /* addRaffleController.swift in Sources */,
 				C22664BF245C667400E446C7 /* Ticket.swift in Sources */,
@@ -461,6 +465,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 892DZ3A58K;
 				INFOPLIST_FILE = Raffle_v2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -479,6 +484,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 892DZ3A58K;
 				INFOPLIST_FILE = Raffle_v2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

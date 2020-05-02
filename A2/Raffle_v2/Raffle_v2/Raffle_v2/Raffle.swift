@@ -14,6 +14,8 @@ var name:String
 var description:String
 var cover:String
 var amount:Int32
+var price:Int32
+var sold_amount:Int32
     
 }
 
