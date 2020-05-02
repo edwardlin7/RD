@@ -47,6 +47,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your image will be dangerous with us bro!</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
