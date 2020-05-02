@@ -47,6 +47,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>I&apos;m watching you.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your image will be dangerous with us bro!</string>
 	<key>UISupportedInterfaceOrientations</key>

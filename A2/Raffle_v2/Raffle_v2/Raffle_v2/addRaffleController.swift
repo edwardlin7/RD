@@ -32,6 +32,7 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
         
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
         
         let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
         
