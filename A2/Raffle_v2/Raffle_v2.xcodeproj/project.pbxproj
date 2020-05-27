@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C20E25A1247CF70900D6766E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20E25A0247CF70900D6766E /* TabBarController.swift */; };
+		C20E25A3247CFAB300D6766E /* TicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20E25A2247CFAB300D6766E /* TicketViewController.swift */; };
+		C20E25A5247CFACB00D6766E /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20E25A4247CFACB00D6766E /* DrawViewController.swift */; };
+		C20E25AB247D088600D6766E /* TicketViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20E25AA247D088600D6766E /* TicketViewCell.swift */; };
+		C20E25AD247D1DB600D6766E /* TicketDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20E25AC247D1DB600D6766E /* TicketDetailController.swift */; };
 		C2266489245C5F7200E446C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2266488245C5F7200E446C7 /* AppDelegate.swift */; };
 		C226648B245C5F7200E446C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C226648A245C5F7200E446C7 /* SceneDelegate.swift */; };
 		C226648D245C5F7200E446C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C226648C245C5F7200E446C7 /* ViewController.swift */; };
@@ -22,6 +27,9 @@
 		C22664C3245C70EC00E446C7 /* raffleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22664C2245C70EC00E446C7 /* raffleCell.swift */; };
 		C22664C9245D66E700E446C7 /* addRaffleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22664C8245D66E700E446C7 /* addRaffleController.swift */; };
 		C22664CB245DCBA700E446C7 /* editRaffleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22664CA245DCBA700E446C7 /* editRaffleController.swift */; };
+		C26138BC247A818300C23130 /* StringExtent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26138BB247A818300C23130 /* StringExtent.swift */; };
+		C26138BE247A92C800C23130 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26138BD247A92C800C23130 /* HelperFunctions.swift */; };
+		C2D4871924792AB800309A3C /* SellRaffleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D4871824792AB800309A3C /* SellRaffleController.swift */; };
 		C2DF939C246A71FD008A19F0 /* MyTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DF939B246A71FD008A19F0 /* MyTableView.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +51,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C2266485245C5F7200E446C7 /* Raffle_v2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Raffle_v2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C20E25A0247CF70900D6766E /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		C20E25A2247CFAB300D6766E /* TicketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketViewController.swift; sourceTree = "<group>"; };
+		C20E25A4247CFACB00D6766E /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
+		C20E25AA247D088600D6766E /* TicketViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketViewCell.swift; sourceTree = "<group>"; };
+		C20E25AC247D1DB600D6766E /* TicketDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketDetailController.swift; sourceTree = "<group>"; };
+		C2266485245C5F7200E446C7 /* Raffle Hub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Raffle Hub.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2266488245C5F7200E446C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C226648A245C5F7200E446C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C226648C245C5F7200E446C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +77,9 @@
 		C22664C2245C70EC00E446C7 /* raffleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = raffleCell.swift; sourceTree = "<group>"; };
 		C22664C8245D66E700E446C7 /* addRaffleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addRaffleController.swift; sourceTree = "<group>"; };
 		C22664CA245DCBA700E446C7 /* editRaffleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = editRaffleController.swift; sourceTree = "<group>"; };
+		C26138BB247A818300C23130 /* StringExtent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtent.swift; sourceTree = "<group>"; };
+		C26138BD247A92C800C23130 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		C2D4871824792AB800309A3C /* SellRaffleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellRaffleController.swift; sourceTree = "<group>"; };
 		C2DF939B246A71FD008A19F0 /* MyTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,7 +121,7 @@
 		C2266486245C5F7200E446C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C2266485245C5F7200E446C7 /* Raffle_v2.app */,
+				C2266485245C5F7200E446C7 /* Raffle Hub.app */,
 				C226649B245C5F7500E446C7 /* Raffle_v2Tests.xctest */,
 				C22664A6245C5F7500E446C7 /* Raffle_v2UITests.xctest */,
 			);
@@ -120,16 +136,24 @@
 				C2266488245C5F7200E446C7 /* AppDelegate.swift */,
 				C226648A245C5F7200E446C7 /* SceneDelegate.swift */,
 				C226648C245C5F7200E446C7 /* ViewController.swift */,
+				C26138BB247A818300C23130 /* StringExtent.swift */,
 				C22664C2245C70EC00E446C7 /* raffleCell.swift */,
 				C226648E245C5F7200E446C7 /* Main.storyboard */,
+				C20E25A0247CF70900D6766E /* TabBarController.swift */,
+				C20E25A2247CFAB300D6766E /* TicketViewController.swift */,
+				C20E25AC247D1DB600D6766E /* TicketDetailController.swift */,
+				C20E25A4247CFACB00D6766E /* DrawViewController.swift */,
+				C2D4871824792AB800309A3C /* SellRaffleController.swift */,
 				C22664CA245DCBA700E446C7 /* editRaffleController.swift */,
 				C22664C8245D66E700E446C7 /* addRaffleController.swift */,
 				C22664BE245C667400E446C7 /* Ticket.swift */,
+				C26138BD247A92C800C23130 /* HelperFunctions.swift */,
 				C22664C0245C668500E446C7 /* Customer.swift */,
 				C2266491245C5F7500E446C7 /* Assets.xcassets */,
 				C2266493245C5F7500E446C7 /* LaunchScreen.storyboard */,
 				C2266496245C5F7500E446C7 /* Info.plist */,
 				C2DF939B246A71FD008A19F0 /* MyTableView.swift */,
+				C20E25AA247D088600D6766E /* TicketViewCell.swift */,
 			);
 			path = Raffle_v2;
 			sourceTree = "<group>";
@@ -169,7 +193,7 @@
 			);
 			name = Raffle_v2;
 			productName = Raffle_v2;
-			productReference = C2266485245C5F7200E446C7 /* Raffle_v2.app */;
+			productReference = C2266485245C5F7200E446C7 /* Raffle Hub.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C226649A245C5F7500E446C7 /* Raffle_v2Tests */ = {
@@ -285,11 +309,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				C226648D245C5F7200E446C7 /* ViewController.swift in Sources */,
+				C2D4871924792AB800309A3C /* SellRaffleController.swift in Sources */,
 				C22664CB245DCBA700E446C7 /* editRaffleController.swift in Sources */,
+				C20E25A1247CF70900D6766E /* TabBarController.swift in Sources */,
+				C20E25A5247CFACB00D6766E /* DrawViewController.swift in Sources */,
 				C22664C1245C668500E446C7 /* Customer.swift in Sources */,
 				C22664C9245D66E700E446C7 /* addRaffleController.swift in Sources */,
 				C22664BF245C667400E446C7 /* Ticket.swift in Sources */,
 				C22664C3245C70EC00E446C7 /* raffleCell.swift in Sources */,
+				C20E25A3247CFAB300D6766E /* TicketViewController.swift in Sources */,
+				C20E25AB247D088600D6766E /* TicketViewCell.swift in Sources */,
+				C26138BE247A92C800C23130 /* HelperFunctions.swift in Sources */,
+				C20E25AD247D1DB600D6766E /* TicketDetailController.swift in Sources */,
+				C26138BC247A818300C23130 /* StringExtent.swift in Sources */,
 				C2266489245C5F7200E446C7 /* AppDelegate.swift in Sources */,
 				C22664BD245C655C00E446C7 /* Raffle.swift in Sources */,
 				C2DF939C246A71FD008A19F0 /* MyTableView.swift in Sources */,
@@ -471,13 +503,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 892DZ3A58K;
 				INFOPLIST_FILE = Raffle_v2/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Raffle Hub";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -492,13 +524,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 892DZ3A58K;
 				INFOPLIST_FILE = Raffle_v2/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.utas.cis.cliu18.Raffle-v2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Raffle Hub";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

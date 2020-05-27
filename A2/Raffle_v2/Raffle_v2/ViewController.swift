@@ -12,31 +12,72 @@ class ViewController: UIViewController {
 
     @IBOutlet var raffleTableView: UITableView!
     
+    @IBOutlet weak var segment: UISegmentedControl!
+    var winner = "unknown yet"
+    var dataSource = "undrawn"
+    var allRaffles = [Raffle]()
     var raffles = [Raffle]()
+    var customers = [Customer]()
     
+    let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
-        
         //database.deleteAll()
-        raffles = database.selectAllRaffles()
-        self.navigationItem.setHidesBackButton(true, animated: false)
+        initData()
+        
     }
     
-    @IBAction func returnedFromEdit(segue: UIStoryboardSegue) {
-        print ("returned from")
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        print("ahahahahahahahahahhahahhaahahha")
+        customers = database.selectAllCus()
     }
-
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    func initData(){
+        allRaffles = database.selectAllRaffles()
+        
+        for raffle in allRaffles where raffle.drawn == 0{
+            print(raffle.drawn)
+            raffles.append(raffle)
+        }
+    }
+    
+    @IBAction func didChangeSegment(_ sender: UISegmentedControl){
+        if sender.selectedSegmentIndex == 0{
+            dataSource = "undrawn"
+            raffles.removeAll()
+            for raffle in allRaffles where raffle.drawn == 0{
+                raffles.append(raffle)
+            }
+            raffleTableView.rowHeight = 130.0
+            raffleTableView.reloadData()
+            
+        }else if sender.selectedSegmentIndex == 1{
+            dataSource = "drawn"
+            raffles.removeAll()
+            for raffle in allRaffles where raffle.drawn == 1{
+                raffles.append(raffle)
+            }
+            raffleTableView.rowHeight = 130.0
+            raffleTableView.reloadData()
+        }else if sender.selectedSegmentIndex == 2{
+            dataSource = "customers"
+            raffleTableView.rowHeight = 50.0
+            raffleTableView.reloadData()
+        }
+    }
+    
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
         if segue.identifier == "ShowEditRaffleSegue" {
             
-            guard let editRaffleController = segue.destination as? editRaffleController else{
+            guard let tabBarController = segue.destination as? TabBarController else{
                 fatalError("Unexpected destination: \(segue.destination)")
             }
+            
+            let editView = tabBarController.viewControllers?[0] as? editRaffleController
             
             guard let raffleCell = sender as? raffleCell else{
                 fatalError("Unexpected sender: \(String(describing: sender))")
@@ -47,19 +88,47 @@ class ViewController: UIViewController {
             }
             
             let selectedRaffle = raffles[indexPath.row]
-            editRaffleController.raffle = selectedRaffle
+            
+            editView!.raffle = selectedRaffle
             
         }
     }
     
-    func decodeImage(imageBase64:String) -> UIImage {
+    @IBAction func unwindFromEditVC(_ sender: UIStoryboardSegue){
         
-        let dataDecoded:NSData = NSData(base64Encoded: imageBase64, options: NSData.Base64DecodingOptions(rawValue: 0))!
-        let decodedImage:UIImage = UIImage(data: dataDecoded as Data)!
-        
-        return decodedImage
+        if sender.source is editRaffleController {
+            if let senderVC = sender.source as? editRaffleController{
+                raffles.removeAll()
+                allRaffles.removeAll()
+                initData()
+                self.segment.selectedSegmentIndex = 0
+            }
+            raffleTableView.reloadData()
+        }
     }
-
+    
+    @IBAction func unwindFromAddVC(_ sender: UIStoryboardSegue){
+        if sender.source is addRaffleController{
+            if let senderVC = sender.source as? addRaffleController{
+                raffles.removeAll()
+                allRaffles.removeAll()
+                initData()
+                self.segment.selectedSegmentIndex = 0
+            }
+            raffleTableView.reloadData()
+        }
+    }
+    @IBAction func unwindFromDrawVC(_ sender: UIStoryboardSegue){
+        if sender.source is DrawViewController{
+            if let senderVC = sender.source as? DrawViewController{
+                raffles.removeAll()
+                allRaffles.removeAll()
+                initData()
+                self.segment.selectedSegmentIndex = 0
+            }
+            raffleTableView.reloadData()
+        }
+    }
 
 }
 
@@ -88,37 +157,92 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(raffles.count)
-        return raffles.count
+        //print(raffles.count)
+        if dataSource == "customers"{
+            return customers.count
+        }else{
+            return raffles.count
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "raffleCell", for: indexPath) as? raffleCell
         
-        let raffle = raffles[indexPath.row]
         
-        let image = decodeImage(imageBase64: raffle.cover)
         
-        //let menuInteraction = UIContextMenuInteraction(delegate: self)
         
-        //cell?.addInteraction(menuInteraction)
-        cell?.cellDelegate = self
-        cell?.index = indexPath
-        cell?.raffleName.text = raffle.name
+
         
-        if raffle.margin == 1 {
-            cell?.raffleType.text = "#margin#"
-        }else{
-            cell?.raffleType.text = "#regular#"
+        
+        switch dataSource {
+        case "drawn":
+            let raffle = raffles[indexPath.row]
+            cell?.raffleCover.isHidden = false
+            cell?.winner.isHidden = false
+            cell?.winnerLabel.isHidden = false
+            cell?.customerName.isHidden = true
+            cell?.raffleName.isHidden = false
+            let image = Helper.decodeImage(imageBase64: raffle.cover)
+            //cell?.cellDelegate = self
+            cell?.index = indexPath
+            cell?.raffleName.text = raffle.name
+            
+            if raffle.margin == 1 {
+                cell?.raffleType.text = "#margin#"
+            }else{
+                cell?.raffleType.text = "#regular#"
+            }
+            cell?.winner.text = winner
+            cell?.raffleCover.image = image
+            cell?.raffleType.textColor = UIColor.systemGray
+            print("the source is drawn")
+        case "undrawn":
+            let raffle = raffles[indexPath.row]
+            cell?.raffleName.isHidden = false
+            cell?.raffleCover.isHidden = false
+            cell?.winner.isHidden = true
+            cell?.winnerLabel.isHidden = true
+            cell?.customerName.isHidden = true
+            let image = Helper.decodeImage(imageBase64: raffle.cover)
+            //cell?.cellDelegate = self
+            cell?.index = indexPath
+            cell?.raffleName.text = raffle.name
+            
+            if raffle.margin == 1 {
+                cell?.raffleType.text = "#margin#"
+            }else{
+                cell?.raffleType.text = "#regular#"
+            }
+            cell?.winner.text = winner
+            cell?.raffleCover.image = image
+            cell?.raffleType.textColor = UIColor.systemGray
+            print("the source is undrawn")
+        case "customers":
+            let customer = customers[indexPath.row]
+            cell?.customerName.isHidden = false
+            cell?.raffleName.isHidden = true
+            cell?.customerName.text = customer.name
+            cell?.raffleCover.isHidden = true
+            print("the source is customers")
+        default:
+            break
         }
         
-        cell?.raffleCover.image = image
         
         return cell!
     }
     
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "ShowEditRaffleSegue" && dataSource == "drawn" {
+            return false
+        }else{
+            return true
+        }
+    }
 }
+
 
 extension ViewController: TableViewRaffle{
     func onClickCell(index: Int) {

@@ -19,6 +19,11 @@ class raffleCell: UITableViewCell {
     @IBOutlet var raffleName: UILabel!
     
     @IBOutlet weak var raffleType: UILabel!
+    @IBOutlet weak var winner: UILabel!
+    @IBOutlet weak var winnerLabel:UILabel!
+    
+    @IBOutlet weak var buyBtn: UIButton!
+    @IBOutlet weak var customerName: UILabel!
     
     var cellDelegate:TableViewRaffle?
     var index:IndexPath?
@@ -26,6 +31,7 @@ class raffleCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        buyBtn.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

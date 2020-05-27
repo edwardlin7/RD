@@ -26,7 +26,7 @@ class SQLiteDatabase
      
         WARNING: DOING THIS WILL WIPE YOUR DATA, unless you modify how updateDatabase() works.
      */
-    private let DATABASE_VERSION = 6
+    private let DATABASE_VERSION = 9
     
     
     
@@ -337,7 +337,8 @@ class SQLiteDatabase
                 Cover TEXT,
                 Amount INTEGER,
                 Price INTEGER,
-                Sold_amount INTEGER
+                Sold_amount INTEGER,
+                Drawn INTEGER
             );
         """
         let createTicketTableQuery =
@@ -393,7 +394,7 @@ class SQLiteDatabase
         
         insertWithQuery(insertStatementQuery, bindingFunction: { (insertStatement) in
             sqlite3_bind_text(insertStatement, 1, NSString(string: customer.name).utf8String, -1, nil)
-            sqlite3_bind_text(insertStatement, 1, NSString(string: customer.mobile).utf8String, -1, nil)
+            sqlite3_bind_text(insertStatement, 2, NSString(string: customer.mobile).utf8String, -1, nil)
             
         })
     }
@@ -411,13 +412,28 @@ class SQLiteDatabase
                        cover: String(cString:sqlite3_column_text(row, 4)),
                        amount:sqlite3_column_int(row, 5),
                        price:sqlite3_column_int(row, 6),
-                       sold_amount:sqlite3_column_int(row, 7)
+                       sold_amount:sqlite3_column_int(row, 7),
+                       drawn: Int(sqlite3_column_int(row, 8))
                        )//add it to the result array
                    result += [raffleArray]
         })
         return result
     }
    
+    func selectAllCus() ->[Customer]{
+        var result = [Customer]()
+        let selectStatementQuery = "SELECT * FROM Customer"
+        
+        selectWithQuery(selectStatementQuery, eachRow: { (row) in
+                   let cusArray = Customer(
+                       ID: sqlite3_column_int(row, 0),
+                       name: String(cString:sqlite3_column_text(row, 1)),
+                       mobile: String(cString:sqlite3_column_text(row, 2))
+                       )//add it to the result array
+                   result += [cusArray]
+        })
+        return result
+    }
     func updateRaffle(raffle:Raffle){
         let statement = "UPDATE Raffle SET Name = ?,Description = ?, Cover =?, Amount = ?, Price = ?  WHERE ID = ?"
         
@@ -429,6 +445,123 @@ class SQLiteDatabase
             sqlite3_bind_int(insertStatement, 5, Int32(raffle.price))
             sqlite3_bind_int(insertStatement, 6, Int32(raffle.ID))
         })
+    }
+    
+    func updateSoldAmount(raffleName:String, sold:Int){
+        let statement = "UPDATE Raffle SET Sold_amount = Sold_amount + ?  WHERE Name = ?"
+        
+        updateWithQuery(statement, bindingFunction:{(insertStatement) in
+            sqlite3_bind_int(insertStatement, 1, Int32(sold))
+            sqlite3_bind_text(insertStatement, 2, NSString(string:raffleName).utf8String, -1, nil)
+        })
+    }
+    
+    func updateTicketCustomer(ID:Int32, customerName:String){
+        let statement = "UPDATE Ticket SET Customer_name = ? WHERE ID = ?"
+        
+        updateWithQuery(statement,bindingFunction: {(insertStatement) in
+            sqlite3_bind_text(insertStatement, 1, NSString(string:customerName).utf8String, -1, nil)
+            sqlite3_bind_int(insertStatement, 2, Int32(ID))
+        })
+    }
+    
+    func updateCustomer(customer:Customer){
+        let statement = "UPDATE Customer SET Name = ?,Mobile = ? WHERE ID = ?"
+        
+        updateWithQuery(statement,bindingFunction: {(insertStatement) in
+            sqlite3_bind_text(insertStatement, 1, NSString(string:customer.name).utf8String, -1, nil)
+            sqlite3_bind_text(insertStatement, 2, NSString(string:customer.mobile).utf8String, -1, nil)
+            sqlite3_bind_int(insertStatement, 3, Int32(customer.ID))
+        })
+    }
+    
+    
+    func selectRaffleByName(name:String) -> Raffle{
+        var result:Raffle?
+        let selectStatementQuery = "SELECT * FROM Raffle WHERE Name = ?"
+        
+        selectWithQuery(selectStatementQuery, eachRow: { (row) in
+            let raffle = Raffle(ID: sqlite3_column_int(row, 0),
+                                name: String(cString:sqlite3_column_text(row, 1)),
+                                margin: sqlite3_column_int(row, 2),
+                                description: String(cString:sqlite3_column_text(row, 3)),
+                                cover: String(cString:sqlite3_column_text(row, 4)),
+                                amount: sqlite3_column_int(row, 5),
+                                price: sqlite3_column_int(row, 6),
+                                sold_amount: sqlite3_column_int(row, 7),
+                                drawn: Int(sqlite3_column_int(row, 8))
+            )
+            result = raffle
+        },
+                        bindingFunction: { (selectStatement) in
+                            sqlite3_bind_text(selectStatement, 1, NSString(string:name).utf8String, -1, nil)
+        })
+        return result!
+    }
+    
+    func selectRaffleBy(ID:Int32) -> Raffle{
+        var result:Raffle?
+        let selectStatementQuery = "SELECT * FROM Raffle WHERE ID = ?"
+        
+        selectWithQuery(selectStatementQuery, eachRow: { (row) in
+            let raffle = Raffle(ID: sqlite3_column_int(row, 0),
+                                name: String(cString:sqlite3_column_text(row, 1)),
+                                margin: sqlite3_column_int(row, 2),
+                                description: String(cString:sqlite3_column_text(row, 3)),
+                                cover: String(cString:sqlite3_column_text(row, 4)),
+                                amount: sqlite3_column_int(row, 5),
+                                price: sqlite3_column_int(row, 6),
+                                sold_amount: sqlite3_column_int(row, 7),
+                                drawn: Int(sqlite3_column_int(row, 8))
+            )
+            result = raffle
+        },
+                        bindingFunction: { (selectStatement) in
+                            sqlite3_bind_int(selectStatement, 1, Int32(ID))
+        })
+        return result!
+    }
+    
+    func checkRaffleExists(name:String) ->Bool{
+        var result = [Raffle]()
+        let selectStatementQuery = "SELECT * FROM Raffle WHERE Name = ?"
+        
+        selectWithQuery(selectStatementQuery, eachRow: { (row) in //create a game object from each result
+                   let raffleArray = Raffle(
+                       ID: sqlite3_column_int(row, 0),
+                       name: String(cString:sqlite3_column_text(row, 1)),
+                       margin:sqlite3_column_int(row, 2),
+                       description: String(cString:sqlite3_column_text(row, 3)),
+                       cover: String(cString:sqlite3_column_text(row, 4)),
+                       amount:sqlite3_column_int(row, 5),
+                       price:sqlite3_column_int(row, 6),
+                       sold_amount:sqlite3_column_int(row, 7),
+                       drawn: Int(sqlite3_column_int(row, 8))
+                       )//add it to the result array
+                   result += [raffleArray]
+        },
+                        bindingFunction: { (selectStatement) in
+                        sqlite3_bind_text(selectStatement, 1, NSString(string:name).utf8String, -1, nil)
+        })
+        return result.isEmpty
+    }
+    
+    func checkCustomerExists(name:String) ->Bool{
+        var result = [Customer]()
+        let selectStatementQuery = "SELECT * FROM Customer WHERE Name = ?"
+        
+        selectWithQuery(selectStatementQuery, eachRow: { (row) in 
+                   let customerArray = Customer(
+                       ID: sqlite3_column_int(row, 0),
+                       name: String(cString:sqlite3_column_text(row, 1)),
+                       mobile: String(cString:sqlite3_column_text(row, 2))
+                       )//add it to the result array
+                   result += [customerArray]
+        },
+                        bindingFunction: { (selectStatement) in
+                        sqlite3_bind_text(selectStatement, 1, NSString(string:name).utf8String, -1, nil)
+        })
+        return result.isEmpty
     }
     
     func selectTicketsByRaffle(name:String) ->[Ticket]{
@@ -451,25 +584,25 @@ class SQLiteDatabase
         return result
     }
     
-    func selectTicketsByNumber(ticket_number:Int32) ->[Ticket]{
-        var result = [Ticket]()
+    func selectTicketByNumber(ticket_number:Int32) -> Ticket{
+        var result:Ticket?
         let selectStatementQuery = "SELECT * FROM Ticket WHERE Ticket_number = ?"
         
-        selectWithQuery(selectStatementQuery, eachRow: { (row) in //create a game object from each result
-                   let ticketArray = Ticket(
-                       ID: sqlite3_column_int(row, 0),
-                       name: String(cString:sqlite3_column_text(row, 1)),
-                       ticket_number:sqlite3_column_int(row, 2),
-                       datetime: String(cString:sqlite3_column_text(row, 3)),
-                       customer_name: String(cString:sqlite3_column_text(row, 4))
-                       )//add it to the result array
-                   result += [ticketArray]
-        },
-                        bindingFunction: {(selectStatement) in
-                            sqlite3_bind_int(selectStatement, 1, Int32(ticket_number))
-        })
-        return result
-    }
+        selectWithQuery(selectStatementQuery, eachRow: { (row) in
+                let ticket = Ticket(ID: sqlite3_column_int(row, 0),
+                                    name: String(cString:sqlite3_column_text(row, 1)),
+                                    ticket_number: sqlite3_column_int(row, 2),
+                                    datetime: String(cString:sqlite3_column_text(row, 3)),
+                                    customer_name:  String(cString:sqlite3_column_text(row, 4))
+                )
+                result = ticket
+            },
+                            bindingFunction: { (selectStatement) in
+                                sqlite3_bind_int(selectStatement, 1, ticket_number)
+            })
+            return result!
+        }
+    
     
     func selectTicketsByCustomer(customer_name:String) ->[Ticket]{
         var result = [Ticket]()
@@ -489,6 +622,49 @@ class SQLiteDatabase
                         sqlite3_bind_text(selectStatement, 1, NSString(string: customer_name).utf8String, -1, nil)
         })
         return result
+    }
+    
+    func selectCustomersByName(customer_name:String) ->[Customer]{
+        var result = [Customer]()
+        let selectStatementQuery = "SELECT * FROM Customer WHERE Name = ?"
+       
+        selectWithQuery(selectStatementQuery, eachRow: { (row) in //create a game object from each result
+                   let cusArray = Customer(
+                       ID: sqlite3_column_int(row, 0),
+                       name: String(cString:sqlite3_column_text(row, 1)),
+                       mobile:String(cString:sqlite3_column_text(row, 2))
+            )
+                   result += [cusArray]
+        },
+                        bindingFunction: {(selectStatement) in
+                        sqlite3_bind_text(selectStatement, 1, NSString(string: customer_name).utf8String, -1, nil)
+        })
+        
+        return result
+    }
+    
+    func drawRaffleBy(ID:Int32){
+        let statement = "UPDATE Raffle SET Drawn = ? WHERE ID = ?"
+        
+        updateWithQuery(statement,bindingFunction: {(insertStatement) in
+            sqlite3_bind_int(insertStatement, 1, 1)
+            sqlite3_bind_int(insertStatement, 2, Int32(ID))
+        })
+    }
+    
+    func deleteRaffleBy(ID:Int32, name:String) {
+        let query1 = """
+        DELETE FROM Raffle WHERE ID=?
+        """
+        let query2 = """
+        DELETE FROM Ticket WHERE Name=?
+        """
+        insertWithQuery(query1, bindingFunction: { (insertStatement) in
+            sqlite3_bind_int(insertStatement, 1, ID)
+        })
+        insertWithQuery(query2, bindingFunction: { (insertStatement) in
+            sqlite3_bind_text(insertStatement, 1, NSString(string: name).utf8String, -1, nil)
+        })
     }
     
     func deleteAll(){

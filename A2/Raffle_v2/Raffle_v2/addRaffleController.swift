@@ -8,7 +8,7 @@
 
 import UIKit
 
-class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet var raffleName: UITextField!
     
@@ -33,16 +33,18 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
     func viewInit(){
         
         raffleName.layer.borderWidth = 1
-        raffleName.layer.borderColor = UIColor.gray.cgColor
+        raffleName.layer.borderColor = UIColor.systemGray3.cgColor
         raffleDescription.layer.borderWidth = 1
-        raffleDescription.layer.borderColor = UIColor.gray.cgColor
+        raffleDescription.layer.borderColor = UIColor.systemGray3.cgColor
         ticketPrice.layer.borderWidth = 1
-        ticketPrice.layer.borderColor = UIColor.gray.cgColor
+        ticketPrice.layer.borderColor = UIColor.systemGray3.cgColor
         raffleAmount.layer.borderWidth = 1
-        raffleAmount.layer.borderColor = UIColor.gray.cgColor
+        raffleAmount.layer.borderColor = UIColor.systemGray3.cgColor
         
         let image = UIImage(named: "raffleCover")
         raffleCover.image = image
+        
+        initializeTextFields()
         
     }
     
@@ -53,6 +55,29 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
         ticketPrice.resignFirstResponder()
         raffleAmount.resignFirstResponder()
         
+    }
+    
+    func initializeTextFields() {
+      ticketPrice.delegate = self
+      ticketPrice.keyboardType = UIKeyboardType.numberPad
+      raffleAmount.delegate = self
+      raffleAmount.keyboardType = UIKeyboardType.numberPad
+    
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let currentText = textField.text ?? ""
+        let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        
+        switch textField{
+        case ticketPrice:
+            return prospectiveText.containsOnlyCharactersIn(matchCharacters: "0123456789")
+        case raffleAmount:
+            return prospectiveText.containsOnlyCharactersIn(matchCharacters: "0123456789")
+        default:
+            return true
+        }
     }
     
     @IBAction func addCoverBtn(_ sender: UIButton) {
@@ -112,44 +137,48 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
     
     @IBAction func confirmAddRaffle(_ sender: UIButton) {
         
-        let raffleNameInput = raffleName.text!
-        let raffleDescriptionInput = raffleDescription.text!
+        let raffleNameInput = raffleName.text
+        let raffleDescriptionInput = raffleDescription.text ?? "N/A"
         let raffleCoverInput = (raffleCover.image?.jpegData(compressionQuality: 0.3)?.base64EncodedString())!
-        let raffleAmountInput = raffleAmount.text!
-        let rafflePriceInput = ticketPrice.text!
-        
+        let raffleAmountInput = raffleAmount.text
+        let rafflePriceInput = ticketPrice.text
         let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
         
-        database.insertRaffle(raffle: Raffle(
-            name:raffleNameInput,
-            margin:margin,
-            description:raffleDescriptionInput,
-            cover:raffleCoverInput,
-            amount:Int32(raffleAmountInput) ?? 0,
-            price:Int32(rafflePriceInput) ?? 0,
-            sold_amount:0
-        ))
-        
-        let confirmAlert = UIAlertController(title: "A new raffle has been created!", message: nil, preferredStyle: .alert)
-        
-        let confirmAction = UIAlertAction(title: "OK", style: .default){ (action) in
-        self.performSegue(withIdentifier: "addRaffleSegue", sender: action)
+        if raffleName.text!.isEmpty || raffleAmount.text!.isEmpty || raffleAmount.text!.isEmpty || ticketPrice.text!.isEmpty{
+            
+            let alert = UIAlertController(title: "Make sure the raffle has a name, ticket price and available amount.", message:nil, preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+            
+        }else if !database.checkRaffleExists(name: raffleNameInput!){
+            
+            let alert = UIAlertController(title: "Raffle \"\(raffleNameInput!)\" already exists", message:nil, preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }else{
+            
+            database.insertRaffle(raffle: Raffle(
+                name:raffleNameInput!,
+                margin:margin,
+                description:raffleDescriptionInput,
+                cover:raffleCoverInput,
+                amount:Int32(raffleAmountInput!)!,
+                price:Int32(rafflePriceInput!)!,
+                sold_amount:0,
+                drawn: 0
+            ))
+            
+            let confirmAlert = UIAlertController(title: "A new raffle has been created!", message: nil, preferredStyle: .alert)
+            
+            let confirmAction = UIAlertAction(title: "OK", style: .default){ (action) in
+            self.performSegue(withIdentifier: "addRaffleSegue", sender: action)
+            }
+            
+            confirmAlert.addAction(confirmAction)
+            present(confirmAlert, animated: true, completion: nil)
         }
-        
-        confirmAlert.addAction(confirmAction)
-        present(confirmAlert, animated: true, completion: nil)
     }
         
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

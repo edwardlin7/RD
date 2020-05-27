@@ -28,14 +28,28 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var editBtn: UIButton!
     @IBOutlet weak var editSaveBtn: UIButton!
     @IBOutlet weak var editCancelBtn: UIButton!
+    @IBOutlet weak var editDeleteBtn: UIButton!
+    @IBOutlet weak var editSellBtn: UIButton!
     
+    let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
     var raffle:Raffle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         displayData()
         viewInit()
-
+        
+    }
+    
+    func passDataToTicketAndDraw(){
+        
+        let ticketView = self.tabBarController!.viewControllers![1] as! TicketViewController
+        let drawView = self.tabBarController!.viewControllers![2] as! DrawViewController
+        ticketView.ss = raffle!.name
+        drawView.raffleID = raffle!.ID
+        ticketView.tickets = database.selectTicketsByRaffle(name: raffle!.name)
+        //drawView.tickets = database.selectTicketsByRaffle(name: raffle!.name)
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -50,13 +64,14 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
     func viewInit(){
         
         editName.layer.borderWidth = 1
-        editName.layer.borderColor = UIColor.gray.cgColor
+        editName.layer.borderColor = UIColor.systemGray3.cgColor
         editDescription.layer.borderWidth = 1
-        editDescription.layer.borderColor = UIColor.gray.cgColor
+        editDescription.layer.borderColor = UIColor.systemGray3.cgColor
         editPrice.layer.borderWidth = 1
-        editPrice.layer.borderColor = UIColor.gray.cgColor
+        editPrice.layer.borderColor = UIColor.systemGray3.cgColor
         editTotal.layer.borderWidth = 1
-        editTotal.layer.borderColor = UIColor.gray.cgColor
+        editTotal.layer.borderColor = UIColor.systemGray3.cgColor
+        raffleType.textColor = UIColor.systemGray
         
         editName.isUserInteractionEnabled = false
         editName.backgroundColor = UIColor.systemGray4
@@ -71,13 +86,14 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
         editCancelBtn.isHidden = true
         editSaveBtn.isHidden = true
         editBtn.isHidden = false
+        editDeleteBtn.isHidden = false
+        editSellBtn.isHidden = false
         
     }
     
     func displayData(){
         
         if let displayRaffle = raffle{
-            let viewController = ViewController()
             editName.text = displayRaffle.name
             if displayRaffle.margin == 1 {
                 raffleType.text = "#margin#"
@@ -85,27 +101,30 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
                 raffleType.text = "#regular#"
             }
             editDescription.text = displayRaffle.description
-            editCover.image = viewController.decodeImage(imageBase64: displayRaffle.cover )
+            editCover.image = Helper.decodeImage(imageBase64: displayRaffle.cover )
             editPrice.text = String(displayRaffle.price)
             soldAmount.text = String(displayRaffle.sold_amount)
             editTotal.text = String(displayRaffle.amount)
+            passDataToTicketAndDraw()
         }
     }
     
     func activateView(){
         
-        editName.isUserInteractionEnabled = true
-        editName.backgroundColor = UIColor.white
         editDescription.isUserInteractionEnabled = true
         editDescription.layer.backgroundColor = UIColor.white.cgColor
         editCoverBtn.isUserInteractionEnabled = true
         editCoverBtn.setTitleColor(UIColor.link, for: UIControl.State.normal)
         editBtn.isHidden = true
+        editDeleteBtn.isHidden = true
+        editSellBtn.isHidden = true
         editCancelBtn.isHidden = false
         editSaveBtn.isHidden = false
         
         if raffle?.sold_amount == 0 {
             
+            editName.isUserInteractionEnabled = true
+            editName.backgroundColor = UIColor.white
             editPrice.isUserInteractionEnabled = true
             editPrice.backgroundColor = UIColor.white
             editTotal.isUserInteractionEnabled = true
@@ -181,8 +200,6 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
         let rafflePriceInput = editPrice.text!
         let raffleAmountInput = editTotal.text!
         
-        let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
-        
         database.updateRaffle(raffle: Raffle(
             ID:raffle!.ID,
             name:raffleNameInput,
@@ -191,13 +208,14 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
             cover:raffleCoverInput,
             amount:Int32(raffleAmountInput) ?? 0,
             price:Int32(rafflePriceInput) ?? 0,
-            sold_amount:Int32(soldAmount.text!)!
+            sold_amount:Int32(soldAmount.text!)!,
+            drawn: 0
         ))
         
         let confirmAlert = UIAlertController(title: "Changes saved!", message: nil, preferredStyle: .alert)
         
         let confirmAction = UIAlertAction(title: "OK", style: .default){ (action) in
-            self.performSegue(withIdentifier: "saveRaffleSegue", sender: nil)
+            self.performSegue(withIdentifier: "EditBackToMainSegue", sender: nil)
             //self.dismiss(animated: false)
         }
         
@@ -205,15 +223,44 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
         present(confirmAlert, animated: true, completion: nil)
         
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func deleteRaffle(_ sender: Any) {
+        
+        let confirmAlert = UIAlertController(title: "Are you sure you want to delete Raffle “\(raffle!.name)”?", message: nil, preferredStyle: .alert)
+               
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler:{ (action) in
+                    self.database.deleteRaffleBy(ID: self.raffle!.ID, name: self.raffle!.name)
+                    self.performSegue(withIdentifier: "EditBackToMainSegue", sender: nil)
+               })
+               let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+               confirmAlert.addAction(cancelAction)
+               confirmAlert.addAction(confirmAction)
+               present(confirmAlert, animated: true, completion: nil)
     }
-    */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if segue.identifier == "SellRaffleSegue" {
+            
+            guard let sellRaffleController = segue.destination as? SellRaffleController else{
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            sellRaffleController.raffle = self.raffle
+            
+        }
+    }
+    
+    @IBAction func unwindFromSellRaffleAC(_ sender: UIStoryboardSegue){
+        
+        if sender.source is SellRaffleController {
+            if let senderVC = sender.source as? SellRaffleController{
+                raffle = database.selectRaffleByName(name: editName.text!)
+            }
+            displayData()
+        }
+    }
+    
+
 
 }
