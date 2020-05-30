@@ -338,7 +338,8 @@ class SQLiteDatabase
                 Amount INTEGER,
                 Price INTEGER,
                 Sold_amount INTEGER,
-                Drawn INTEGER
+                Drawn INTEGER,
+                Winner CHAR(255)
             );
         """
         let createTicketTableQuery =
@@ -365,7 +366,7 @@ class SQLiteDatabase
     }
     
     func insertRaffle(raffle:Raffle){
-        let insertStatementQuery = "INSERT INTO Raffle (Name, Margin, Description, Cover, Amount, Price, Sold_amount) VALUES (?,?,?,?,?,?,?);"
+        let insertStatementQuery = "INSERT INTO Raffle (Name, Margin, Description, Cover, Amount, Price, Sold_amount, Drawn, Winner) VALUES (?,?,?,?,?,?,?,?,?);"
         
         insertWithQuery(insertStatementQuery, bindingFunction: { (insertStatement) in
             sqlite3_bind_text(insertStatement, 1, NSString(string: raffle.name).utf8String, -1, nil)
@@ -375,6 +376,8 @@ class SQLiteDatabase
             sqlite3_bind_int(insertStatement, 5, raffle.amount)
             sqlite3_bind_int(insertStatement, 6, raffle.price)
             sqlite3_bind_int(insertStatement, 7, raffle.sold_amount)
+            sqlite3_bind_int(insertStatement, 8, Int32(raffle.drawn))
+            sqlite3_bind_text(insertStatement, 9, NSString(string: raffle.winner).utf8String, -1, nil)
          })
     }
     
@@ -413,7 +416,8 @@ class SQLiteDatabase
                        amount:sqlite3_column_int(row, 5),
                        price:sqlite3_column_int(row, 6),
                        sold_amount:sqlite3_column_int(row, 7),
-                       drawn: Int(sqlite3_column_int(row, 8))
+                       drawn: Int(sqlite3_column_int(row, 8)),
+                       winner: String(cString:sqlite3_column_text(row, 9))
                        )//add it to the result array
                    result += [raffleArray]
         })
@@ -489,7 +493,8 @@ class SQLiteDatabase
                                 amount: sqlite3_column_int(row, 5),
                                 price: sqlite3_column_int(row, 6),
                                 sold_amount: sqlite3_column_int(row, 7),
-                                drawn: Int(sqlite3_column_int(row, 8))
+                                drawn: Int(sqlite3_column_int(row, 8)),
+                                winner: String(cString:sqlite3_column_text(row, 9))
             )
             result = raffle
         },
@@ -512,7 +517,8 @@ class SQLiteDatabase
                                 amount: sqlite3_column_int(row, 5),
                                 price: sqlite3_column_int(row, 6),
                                 sold_amount: sqlite3_column_int(row, 7),
-                                drawn: Int(sqlite3_column_int(row, 8))
+                                drawn: Int(sqlite3_column_int(row, 8)),
+                                winner: String(cString:sqlite3_column_text(row, 9))
             )
             result = raffle
         },
@@ -524,7 +530,7 @@ class SQLiteDatabase
     
     func checkRaffleExists(name:String) ->Bool{
         var result = [Raffle]()
-        let selectStatementQuery = "SELECT * FROM Raffle WHERE Name = ?"
+        let selectStatementQuery = "SELECT * FROM Raffle WHERE Name = ? AND Drawn = 0"
         
         selectWithQuery(selectStatementQuery, eachRow: { (row) in //create a game object from each result
                    let raffleArray = Raffle(
@@ -536,7 +542,8 @@ class SQLiteDatabase
                        amount:sqlite3_column_int(row, 5),
                        price:sqlite3_column_int(row, 6),
                        sold_amount:sqlite3_column_int(row, 7),
-                       drawn: Int(sqlite3_column_int(row, 8))
+                       drawn: Int(sqlite3_column_int(row, 8)),
+                       winner: String(cString:sqlite3_column_text(row, 9))
                        )//add it to the result array
                    result += [raffleArray]
         },
@@ -643,12 +650,17 @@ class SQLiteDatabase
         return result
     }
     
-    func drawRaffleBy(ID:Int32){
-        let statement = "UPDATE Raffle SET Drawn = ? WHERE ID = ?"
+    func drawRaffleBy(ID:Int32, winner: String, raffle:String){
+        let statement = "UPDATE Raffle SET Drawn = ?, Winner = ? WHERE ID = ?"
+        let query = "DELETE FROM Ticket WHERE Name=?"
         
         updateWithQuery(statement,bindingFunction: {(insertStatement) in
             sqlite3_bind_int(insertStatement, 1, 1)
-            sqlite3_bind_int(insertStatement, 2, Int32(ID))
+            sqlite3_bind_text(insertStatement, 2, NSString(string: winner).utf8String, -1, nil)
+            sqlite3_bind_int(insertStatement, 3, Int32(ID))
+        })
+        insertWithQuery(query, bindingFunction: { (insertStatement) in
+            sqlite3_bind_text(insertStatement, 1, NSString(string: raffle).utf8String, -1, nil)
         })
     }
     

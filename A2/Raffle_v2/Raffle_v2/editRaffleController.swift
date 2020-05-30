@@ -8,21 +8,14 @@
 
 import UIKit
 
-class editRaffleController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class editRaffleController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     @IBOutlet var editName: UITextField!
-    
     @IBOutlet var editDescription: UITextView!
-    
     @IBOutlet var editCover: UIImageView!
-    
     @IBOutlet var editCoverBtn: UIButton!
-    
     @IBOutlet var editPrice: UITextField!
-    
     @IBOutlet var soldAmount: UILabel!
-    
     @IBOutlet var editTotal: UITextField!
-    
     @IBOutlet weak var raffleType: UILabel!
     
     @IBOutlet weak var editBtn: UIButton!
@@ -41,6 +34,11 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        self.parent?.title = "Raffle Details"
+    }
+    
     func passDataToTicketAndDraw(){
         
         let ticketView = self.tabBarController!.viewControllers![1] as! TicketViewController
@@ -48,8 +46,6 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
         ticketView.ss = raffle!.name
         drawView.raffleID = raffle!.ID
         ticketView.tickets = database.selectTicketsByRaffle(name: raffle!.name)
-        //drawView.tickets = database.selectTicketsByRaffle(name: raffle!.name)
-        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -88,6 +84,10 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
         editBtn.isHidden = false
         editDeleteBtn.isHidden = false
         editSellBtn.isHidden = false
+        if Int(editTotal.text!) == Int(soldAmount.text!) {
+            editSellBtn.isHidden = true
+        }
+        initializeTextFields()
         
     }
     
@@ -106,6 +106,29 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
             soldAmount.text = String(displayRaffle.sold_amount)
             editTotal.text = String(displayRaffle.amount)
             passDataToTicketAndDraw()
+        }
+    }
+    
+    func initializeTextFields() {
+      editPrice.delegate = self
+      editPrice.keyboardType = UIKeyboardType.numberPad
+      editTotal.delegate = self
+      editTotal.keyboardType = UIKeyboardType.numberPad
+    
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let currentText = textField.text ?? ""
+        let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        
+        switch textField{
+        case editPrice:
+            return prospectiveText.containsOnlyCharactersIn(matchCharacters: "0123456789")
+        case editTotal:
+            return prospectiveText.containsOnlyCharactersIn(matchCharacters: "0123456789")
+        default:
+            return true
         }
     }
     
@@ -130,20 +153,17 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
             editTotal.isUserInteractionEnabled = true
             editTotal.backgroundColor = UIColor.white
         }
-        
-        
     }
     
     @IBAction func editRaffle(_ sender: UIButton) {
         
         activateView()
-        
     }
+    
     @IBAction func editCancel(_ sender: UIButton) {
         
         displayData()
         viewInit()
-        
     }
     
     @IBAction func coverEdit(_ sender: UIButton) {
@@ -172,7 +192,6 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
         self.present(actionSheet, animated: true, completion: nil)
         
     }
-        
         
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
               
@@ -209,7 +228,8 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
             amount:Int32(raffleAmountInput) ?? 0,
             price:Int32(rafflePriceInput) ?? 0,
             sold_amount:Int32(soldAmount.text!)!,
-            drawn: 0
+            drawn: 0,
+            winner: "unknown"
         ))
         
         let confirmAlert = UIAlertController(title: "Changes saved!", message: nil, preferredStyle: .alert)
@@ -260,7 +280,4 @@ class editRaffleController: UIViewController, UIImagePickerControllerDelegate, U
             displayData()
         }
     }
-    
-
-
 }

@@ -13,10 +13,12 @@ class TicketDetailController: UIViewController, UITextFieldDelegate {
     var ticket:Ticket?
     var aCustomer = [Customer]()
     let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
+    
     @IBOutlet weak var ticketNum: UITextField!
     @IBOutlet weak var raffleName: UITextField!
     @IBOutlet weak var customer: UITextField!
     @IBOutlet weak var phoneNum: UITextField!
+    @IBOutlet weak var timeSold: UITextField!
     @IBOutlet weak var saveBtn: UIButton!
     @IBOutlet weak var cancelBtn: UIButton!
     @IBOutlet weak var editBtn: UIButton!
@@ -43,6 +45,8 @@ class TicketDetailController: UIViewController, UITextFieldDelegate {
         ticketNum.backgroundColor = UIColor.systemGray4
         raffleName.isUserInteractionEnabled = false
         raffleName.backgroundColor = UIColor.systemGray4
+        timeSold.isUserInteractionEnabled = false
+        timeSold.backgroundColor = UIColor.systemGray4
         customer.isUserInteractionEnabled = false
         customer.backgroundColor = UIColor.systemGray4
         phoneNum.isUserInteractionEnabled = false
@@ -67,8 +71,8 @@ class TicketDetailController: UIViewController, UITextFieldDelegate {
             ticketNum.text = String(displayTicket.ticket_number)
             raffleName.text = displayTicket.name
             customer.text = displayTicket.customer_name
+            timeSold.text = displayTicket.datetime
         }
-        print(aCustomer)
         phoneNum.text = aCustomer[0].mobile
     }
     
@@ -112,12 +116,14 @@ class TicketDetailController: UIViewController, UITextFieldDelegate {
     
     @IBAction func shareAction(_ sender: Any) {
         
-        let tRaffle = "Raffle: \(ticket!.name)"
-        let tNum = "Ticket#: \(String(ticket!.ticket_number))"
-        let tName = "Entrant: \(ticket!.customer_name)"
-        let tTime = "Purchase Time: \(ticket!.datetime)"
+        let raffle = database.selectRaffleByName(name: ticket!.name)
+        let tPrice = String(raffle.price)
+        let tNum = String(ticket!.ticket_number)
+        let tName = "Name: \(ticket!.customer_name)"
+        let tTime = "Purchased \(ticket!.datetime)"
+        let text = "\(tName), Ticket#\(tNum), $\(tPrice), \(tTime)"
         
-        let activityController = UIActivityViewController(activityItems: [tRaffle, tNum, tName, tTime], applicationActivities: nil)
+        let activityController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         present(activityController, animated: true)
     }
     

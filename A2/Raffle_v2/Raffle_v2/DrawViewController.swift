@@ -32,6 +32,7 @@ class DrawViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        self.parent?.title = "Draw"
         raffle = database.selectRaffleBy(ID: raffleID!)
         tickets = database.selectTicketsByRaffle(name: raffle!.name)
     }
@@ -65,10 +66,10 @@ class DrawViewController: UIViewController, UITextFieldDelegate {
     func viewInit(){
         
         if Int(raffle!.margin) == 1{
-            marginNote.text = "This is a margin raffle depending on the margin between two teams."
+            marginNote.text = "This is a margin raffle."
             
         }else{
-            marginNote.text = "This is a regular, the draw is random."
+            marginNote.text = "This is a regular raffle, the draw is random."
             team1.isEnabled = false
             team2.isEnabled = false
             team1.backgroundColor = UIColor.systemGray4
@@ -118,19 +119,21 @@ class DrawViewController: UIViewController, UITextFieldDelegate {
         
         if ticketNums.isEmpty{
             let alert = UIAlertController(title: "Draw Failed", message:"This raffle doesn't have an entrant yet.", preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default)
+            let action = UIAlertAction(title: "OK", style: .default){ (action) in
+            self.performSegue(withIdentifier: "DrawBackToMain", sender: action)
+            }
             alert.addAction(action)
             present(alert, animated: true, completion: nil)
             return "unknown"
         }else{
-            database.drawRaffleBy(ID: raffleID!)
             
             if ticketNums.contains(marginNum){
+                
                 let ticket  = database.selectTicketByNumber(ticket_number: marginNum)
                 let customers = database.selectCustomersByName(customer_name: ticket.customer_name)
                 let phone = customers[0].mobile
                 let text = "\nTicket#: \(marginNum)\nName: \(ticket.customer_name)\nPhone#: \(phone)"
-                
+                database.drawRaffleBy(ID: raffleID!, winner: ticket.customer_name, raffle: raffle!.name)
                 let alert = UIAlertController(title: "Winner!", message:nil, preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default){ (action) in
                 self.performSegue(withIdentifier: "DrawBackToMain", sender: action)
@@ -141,8 +144,11 @@ class DrawViewController: UIViewController, UITextFieldDelegate {
                 return ticket.customer_name
                 
             }else{
+                database.drawRaffleBy(ID: raffleID!, winner: "N/A", raffle: raffle!.name)
                 let alert = UIAlertController(title: "No one wins", message:"Ticket #\(marginNum) has never been sold.", preferredStyle: .alert)
-                let action = UIAlertAction(title: "OK", style: .default)
+                let action = UIAlertAction(title: "OK", style: .default){ (action) in
+                self.performSegue(withIdentifier: "DrawBackToMain", sender: action)
+                }
                 alert.addAction(action)
                 present(alert, animated: true, completion: nil)
                 return "No one"
@@ -166,7 +172,7 @@ class DrawViewController: UIViewController, UITextFieldDelegate {
             let customers = database.selectCustomersByName(customer_name: ticket.customer_name)
             let phone = customers[0].mobile
             let text = "\nTicket#: \(winner)\nName: \(ticket.customer_name)\nPhone#: \(phone)"
-            database.drawRaffleBy(ID: raffleID!)
+            database.drawRaffleBy(ID: raffleID!, winner: ticket.customer_name, raffle: raffle!.name)
             
             let alert = UIAlertController(title: "Winner!", message:nil, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default){ (action) in
@@ -177,8 +183,5 @@ class DrawViewController: UIViewController, UITextFieldDelegate {
             present(alert, animated: true, completion: nil)
             return ticket.customer_name
         }
-        
-        
     }
-    
 }

@@ -25,12 +25,11 @@ public class Helper {
     static func getTicketNum(exclude:[Int], min:Int, max:Int, type:Int, numOfTickets:Int) -> [Int] {
         var ran = [Int]()
         var num:Int
-        
         for i in 1...numOfTickets{
             if type == 1{
                 repeat {
                     num = Int.random(in: min...max)
-                } while exclude.contains(num) && ran.contains(num)
+                } while exclude.contains(num) || ran.contains(num)
             }else{
                 num = (exclude.max() ?? 0) + i
             }

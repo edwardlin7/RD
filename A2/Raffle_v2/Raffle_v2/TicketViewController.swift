@@ -12,21 +12,48 @@ class TicketViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     @IBOutlet weak var ticketTableView: UITableView!
+    @IBOutlet weak var searchBar: UITextField!
     
     var tickets = [Ticket]()
+    var allTickets = [Ticket]()
     var ss:String?
     let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(ss ?? "nothing at all mannnnnnnnnn")
+       // print(ss ?? "nothing at all mannnnnnnnnn")
         // Do any additional setup after loading the view.
+        for ticket in tickets {
+            allTickets.append(ticket)
+        }
+        searchBar.addTarget(self, action: #selector(searchRecords(_ :)), for: .editingChanged)
+    }
+    
+    @objc func searchRecords(_ textField: UITextField){
+        self.tickets.removeAll()
+        if textField.text?.count != 0 {
+            
+            for ticket in allTickets {
+                if let ticketToSearch = textField.text{
+                    let range = ticket.customer_name.lowercased().range(of: ticketToSearch, options: .caseInsensitive, range: nil, locale: nil)
+                    if range != nil {
+                        self.tickets.append(ticket)
+                    }
+                }
+            }
+            
+        }else{
+            for ticket in allTickets {
+                       tickets.append(ticket)
+                   }
+        }
+        ticketTableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         ticketTableView.reloadData()
-        //print("view appear!!!!!!!!!!!!!!!!!!!!!")
+        self.parent?.title = "Tickets"
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -46,28 +73,11 @@ class TicketViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 fatalError("The selected cell is not being displayed by the table")
             }
             
-            let selectedTicket = tickets[indexPath.row]
+            let selectedTicket = tickets.sorted {$0.ticket_number < $1.ticket_number}[indexPath.row]
             
             ticketDetialView.ticket = selectedTicket
             ticketDetialView.aCustomer = database.selectCustomersByName(customer_name: selectedTicket.customer_name)
             
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let item = tickets[indexPath.row]
-            
-        print("config ??")
-        return UIContextMenuConfiguration(identifier: "my-menu" as NSCopying, previewProvider: nil) { suggestedActions in
-
-            // Create an action for sharing
-            let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
-                print("Sharing \(item)")
-            }
-
-            // Create other actions...
-
-            return UIMenu(title: "", children: [share])
         }
     }
     
@@ -82,7 +92,7 @@ class TicketViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TicketViewCell", for: indexPath) as? TicketViewCell
         
-        let ticket = tickets[indexPath.row]
+        let ticket = tickets.sorted {$0.ticket_number < $1.ticket_number}[indexPath.row]
         cell?.ticketNum.text = String(ticket.ticket_number)
         cell?.customer.text = ticket.customer_name
         return cell!

@@ -11,13 +11,9 @@ import UIKit
 class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet var raffleName: UITextField!
-    
     @IBOutlet var raffleDescription: UITextView!
-    
     @IBOutlet var raffleCover: UIImageView!
-    
     @IBOutlet var ticketPrice: UITextField!
-    
     @IBOutlet var raffleAmount: UITextField!
     
     var margin:Int32 = 0
@@ -26,8 +22,6 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
         super.viewDidLoad()
         
         viewInit()
-
-        // Do any additional setup after loading the view.
     }
     
     func viewInit(){
@@ -167,7 +161,8 @@ class addRaffleController: UIViewController, UIImagePickerControllerDelegate, UI
                 amount:Int32(raffleAmountInput!)!,
                 price:Int32(rafflePriceInput!)!,
                 sold_amount:0,
-                drawn: 0
+                drawn: 0,
+                winner: "unknown"
             ))
             
             let confirmAlert = UIAlertController(title: "A new raffle has been created!", message: nil, preferredStyle: .alert)

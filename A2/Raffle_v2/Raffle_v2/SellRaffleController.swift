@@ -9,11 +9,11 @@
 import UIKit
 
 class SellRaffleController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
-    //var Names = [ "ricardo farmilo ", "Tony laoshi", "jack millos", "Heena inidan", "Yulong Cai", "Matthew Springer" ]
-    //var Nums = [ "123214", "44444", "6746464", "252442", "3252352", "32523523" ]
+
     var Names = [String]()
     var Nums = [String]()
     var originalNameList:[String] = Array()
+    var cusDictionary: [String: String] = [:]
     
     let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
     var raffle:Raffle?
@@ -44,6 +44,10 @@ class SellRaffleController: UIViewController, UITableViewDataSource, UITableView
             Nums.append(cus.mobile)
         }
         
+        for (index, element) in Names.enumerated() {
+            cusDictionary[element] = Nums[index]
+        }
+        
         for name in Names {
             originalNameList.append(name)
         }
@@ -51,16 +55,9 @@ class SellRaffleController: UIViewController, UITableViewDataSource, UITableView
         searchNameBar.addTarget(self, action: #selector(searchRecords(_ :)), for: .editingChanged)
         sellRaffleNum.addTarget(self, action: #selector(textFieldDidEndEditing(_ :)), for: UIControl.Event.editingChanged)
     }
-    
+
     //The autocomplete suggestion box's height depends on the number of cells
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        customerList.frame = CGRect(x: customerList.frame.origin.x, y: customerList.frame.origin.y, width: customerList.frame.size.width, height: customerList.contentSize.height)
-    }
-    
-    //The autocomplete suggestion box's height depends on the number of cells
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    func dynamicTableHeight(){
         customerList.frame = CGRect(x: customerList.frame.origin.x, y: customerList.frame.origin.y, width: customerList.frame.size.width, height: customerList.contentSize.height)
     }
     
@@ -81,6 +78,7 @@ class SellRaffleController: UIViewController, UITableViewDataSource, UITableView
         displayData()
         
     }
+    
     func initializeTextFields() {
       sellRaffleNum.delegate = self
       sellRaffleNum.keyboardType = UIKeyboardType.numberPad
@@ -180,11 +178,10 @@ class SellRaffleController: UIViewController, UITableViewDataSource, UITableView
                    }
         }
         customerList.reloadData()
-        
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return Names.count
     }
     
@@ -194,12 +191,17 @@ class SellRaffleController: UIViewController, UITableViewDataSource, UITableView
             cell = UITableViewCell(style: .default, reuseIdentifier: "customerName")
         }
         cell?.textLabel?.text = Names[indexPath.row]
+        cell?.detailTextLabel?.text = Nums[indexPath.row]
+        dynamicTableHeight()
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customerName")
         searchNameBar.text = Names[indexPath.row]
-        sellPhoneNum.text = Nums[indexPath.row]
+        sellPhoneNum.text = cusDictionary[searchNameBar.text!]
+        
+        //sellPhoneNum.text = Nums[indexPath.row]
         customerList.isHidden = true
         phoneNumLabel.isHidden = false
     }
@@ -214,15 +216,14 @@ class SellRaffleController: UIViewController, UITableViewDataSource, UITableView
         }else{
             
             let min = 0
-            let max = Int(sellTotal.text!)! - 1
+            let max = Int(raffle!.amount) - 1
             //let ticketNum = Helper.getTicketNum(exclude: excludedTicketNums(), min: min, max: max, type: Int(raffle!.margin))
             let name = sellRaffleName.text!
             let customer = sellCustomerName.text!
             let phone = sellPhoneNum.text!
             let numOfTickets = sellRaffleNum.text!
             let subtotal = sellRaffleSubtotal.text!
-            let text = "Raffle: \(name)\nCustomer: \(customer)\nPhone #: \(phone)\nNum of tickets: \(numOfTickets)\nSubtotal: \(subtotal)"
-            
+            let text = "Raffle: \(name)\nCustomer: \(customer)\nPhone #: \(phone)\nNum of tickets: \(numOfTickets)\nSubtotal: $\(subtotal)"
             let ticketNums = Helper.getTicketNum(exclude: excludedTicketNums(), min: min, max: max, type: Int(raffle!.margin), numOfTickets: Int(sellRaffleNum.text!)!)
             
             print("Sold \(ticketNums.count) tickets")
@@ -233,8 +234,6 @@ class SellRaffleController: UIViewController, UITableViewDataSource, UITableView
                                           preferredStyle: .alert)
             
             let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler:{(action) in
-                //self.database.insertTicket(ticket: Ticket(name: name, ticket_number: Int32(ticketNum), datetime: Helper.getCurrentTime(), customer_name: customer))
-                //self.database.updateSoldAmount(raffleName: name, sold: Int(numOfTickets)!)
                 self.updateDatabaseAfterSold(name: name, ticket_nums: ticketNums, datetime: Helper.getCurrentTime(), customer: customer, phone:phone)
                 var thisTicket = [Ticket]()
                 thisTicket = self.database.selectTicketsByRaffle(name: name)

@@ -11,39 +11,130 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet var raffleTableView: UITableView!
-    
     @IBOutlet weak var segment: UISegmentedControl!
+    
     var winner = "unknown yet"
-    var dataSource = "undrawn"
+    var dataSource = "undrawn" // Segment buttons value
     var allRaffles = [Raffle]()
+    var allRafflesForSearch = [Raffle]()
     var raffles = [Raffle]()
     var customers = [Customer]()
+    var allCustomerForSearch = [Customer]()
+    
+    @IBOutlet weak var searchBar: UITextField!
     
     let database:SQLiteDatabase = SQLiteDatabase(databaseName: "RaffleDatabase")
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //database.deleteAll()
+        addNavBarImage()
         initData()
+        searchBar.addTarget(self, action: #selector(searchRecords(_ :)), for: .editingChanged)
+    }
+    
+    // objc function for the search bar
+    @objc func searchRecords(_ textField: UITextField){
+        self.raffles.removeAll()
+        self.customers.removeAll()
+        if dataSource == "undrawn"{
+            if textField.text?.count != 0 {
+                for raffle in allRafflesForSearch where raffle.drawn == 0 {
+                    if let raffleToSearch = textField.text{
+                        let range = raffle.name.lowercased().range(of: raffleToSearch, options: .caseInsensitive, range: nil, locale: nil)
+                        if range != nil {
+                            self.raffles.append(raffle)
+                        }
+                    }
+                }
+            }else{
+                for raffle in allRafflesForSearch where raffle.drawn == 0 {
+                           raffles.append(raffle)
+                       }
+            }
+        }else if dataSource == "drawn" {
+            if textField.text?.count != 0 {
+                for raffle in allRafflesForSearch where raffle.drawn == 1 {
+                    if let raffleToSearch = textField.text{
+                        let range = raffle.name.lowercased().range(of: raffleToSearch, options: .caseInsensitive, range: nil, locale: nil)
+                        if range != nil {
+                            self.raffles.append(raffle)
+                        }
+                    }
+                }
+            }else{
+                for raffle in allRafflesForSearch where raffle.drawn == 1 {
+                           raffles.append(raffle)
+                       }
+            }
+        }else {
+            if textField.text?.count != 0 {
+                for customer in allCustomerForSearch {
+                    if let customerToSearch = textField.text{
+                        let range = customer.name.lowercased().range(of: customerToSearch, options: .caseInsensitive, range: nil, locale: nil)
+                        if range != nil {
+                            self.customers.append(customer)
+                        }
+                    }
+                }
+            }else{
+                for customer in allCustomerForSearch {
+                           customers.append(customer)
+                       }
+            }
+        }
+        raffleTableView.reloadData()
+    }
+    
+    func addNavBarImage() {
         
+        let navController = navigationController!
+        
+        let image = UIImage(named: "icon3.2")
+        let imageView = UIImageView(image: image)
+        
+        let bannerWidth = navController.navigationBar.frame.size.width
+        let bannerHeight = navController.navigationBar.frame.size.height
+        
+        let bannerX = bannerWidth / 2 - image!.size.width / 2
+        let bannerY = bannerHeight / 2 - image!.size.height / 2 
+        
+        imageView.frame = CGRect(x: bannerX, y: bannerY, width: bannerWidth, height: bannerHeight)
+        imageView.contentMode = .scaleAspectFit
+        
+        navigationItem.titleView = imageView
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        print("ahahahahahahahahahhahahhaahahha")
-        customers = database.selectAllCus()
+        raffles.removeAll()
+        allRaffles.removeAll()
+        customers.removeAll()
+        allCustomerForSearch.removeAll()
+        initData()
+        raffleTableView.reloadData()
+        searchBar.text = ""
     }
     
     func initData(){
         allRaffles = database.selectAllRaffles()
+        customers = database.selectAllCus()
         
-        for raffle in allRaffles where raffle.drawn == 0{
-            print(raffle.drawn)
-            raffles.append(raffle)
+        allRafflesForSearch = allRaffles
+        
+        allCustomerForSearch = customers
+        if dataSource == "undrawn"{
+            for raffle in allRaffles where raffle.drawn == 0{
+                raffles.append(raffle)
+            }
+        }else if dataSource == "drawn" {
+            for raffle in allRaffles where raffle.drawn == 1{
+                raffles.append(raffle)
+            }
         }
+        
     }
     
     @IBAction func didChangeSegment(_ sender: UISegmentedControl){
+        searchBar.text = ""
         if sender.selectedSegmentIndex == 0{
             dataSource = "undrawn"
             raffles.removeAll()
@@ -63,6 +154,10 @@ class ViewController: UIViewController {
             raffleTableView.reloadData()
         }else if sender.selectedSegmentIndex == 2{
             dataSource = "customers"
+            customers.removeAll()
+            for customer in allCustomerForSearch{
+                customers.append(customer)
+            }
             raffleTableView.rowHeight = 50.0
             raffleTableView.reloadData()
         }
@@ -87,7 +182,7 @@ class ViewController: UIViewController {
                 fatalError("The selected cell is not being displayed by the table")
             }
             
-            let selectedRaffle = raffles[indexPath.row]
+            let selectedRaffle = raffles.sorted {$0.name < $1.name}[indexPath.row]
             
             editView!.raffle = selectedRaffle
             
@@ -98,10 +193,8 @@ class ViewController: UIViewController {
         
         if sender.source is editRaffleController {
             if let senderVC = sender.source as? editRaffleController{
-                raffles.removeAll()
-                allRaffles.removeAll()
-                initData()
                 self.segment.selectedSegmentIndex = 0
+                didChangeSegment(segment)
             }
             raffleTableView.reloadData()
         }
@@ -110,10 +203,8 @@ class ViewController: UIViewController {
     @IBAction func unwindFromAddVC(_ sender: UIStoryboardSegue){
         if sender.source is addRaffleController{
             if let senderVC = sender.source as? addRaffleController{
-                raffles.removeAll()
-                allRaffles.removeAll()
-                initData()
                 self.segment.selectedSegmentIndex = 0
+                didChangeSegment(segment)
             }
             raffleTableView.reloadData()
         }
@@ -121,10 +212,8 @@ class ViewController: UIViewController {
     @IBAction func unwindFromDrawVC(_ sender: UIStoryboardSegue){
         if sender.source is DrawViewController{
             if let senderVC = sender.source as? DrawViewController{
-                raffles.removeAll()
-                allRaffles.removeAll()
-                initData()
                 self.segment.selectedSegmentIndex = 0
+                didChangeSegment(segment)
             }
             raffleTableView.reloadData()
         }
@@ -134,11 +223,10 @@ class ViewController: UIViewController {
 
 extension ViewController:UITableViewDelegate,UITableViewDataSource{
     
-                                    
+    /*
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let item = raffles[indexPath.row]
-            
-        print("config ??")
+
         return UIContextMenuConfiguration(identifier: "my-menu" as NSCopying, previewProvider: nil) { suggestedActions in
 
             // Create an action for sharing
@@ -150,7 +238,7 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
 
             return UIMenu(title: "", children: [share])
         }
-    }
+    }*/
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -170,22 +258,19 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "raffleCell", for: indexPath) as? raffleCell
         
-        
-        
-        
-
-        
-        
+        //a btn used for debugging
+        cell?.buyBtn.isHidden = true
         switch dataSource {
         case "drawn":
-            let raffle = raffles[indexPath.row]
+            let raffle = raffles.sorted {$0.name < $1.name}[indexPath.row]
             cell?.raffleCover.isHidden = false
             cell?.winner.isHidden = false
+            cell?.winner.text = raffle.winner
             cell?.winnerLabel.isHidden = false
             cell?.customerName.isHidden = true
-            cell?.raffleName.isHidden = false
+            cell?.raffleName.font = UIFont(name: "HelveticaNeue-Bold", size: 22)
             let image = Helper.decodeImage(imageBase64: raffle.cover)
-            //cell?.cellDelegate = self
+            cell?.cellDelegate = self
             cell?.index = indexPath
             cell?.raffleName.text = raffle.name
             
@@ -194,19 +279,18 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
             }else{
                 cell?.raffleType.text = "#regular#"
             }
-            cell?.winner.text = winner
             cell?.raffleCover.image = image
             cell?.raffleType.textColor = UIColor.systemGray
-            print("the source is drawn")
         case "undrawn":
-            let raffle = raffles[indexPath.row]
-            cell?.raffleName.isHidden = false
+            let raffle = raffles.sorted {$0.name < $1.name}[indexPath.row]
+            //cell?.raffleName.isHidden = false
+            cell?.raffleName.font = UIFont(name: "HelveticaNeue-Bold", size: 22)
             cell?.raffleCover.isHidden = false
             cell?.winner.isHidden = true
             cell?.winnerLabel.isHidden = true
             cell?.customerName.isHidden = true
             let image = Helper.decodeImage(imageBase64: raffle.cover)
-            //cell?.cellDelegate = self
+            cell?.cellDelegate = self
             cell?.index = indexPath
             cell?.raffleName.text = raffle.name
             
@@ -215,27 +299,24 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
             }else{
                 cell?.raffleType.text = "#regular#"
             }
-            cell?.winner.text = winner
             cell?.raffleCover.image = image
             cell?.raffleType.textColor = UIColor.systemGray
-            print("the source is undrawn")
         case "customers":
-            let customer = customers[indexPath.row]
+            let customer = customers.sorted {$0.name < $1.name}[indexPath.row]
             cell?.customerName.isHidden = false
-            cell?.raffleName.isHidden = true
+            //cell?.raffleName.isHidden = false
+            cell?.raffleName.text = "Phone#: \(customer.mobile)"
+            cell?.raffleName.font = UIFont(name: "HelveticaNeue", size: 16)
             cell?.customerName.text = customer.name
             cell?.raffleCover.isHidden = true
-            print("the source is customers")
         default:
             break
         }
-        
-        
         return cell!
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == "ShowEditRaffleSegue" && dataSource == "drawn" {
+        if identifier == "ShowEditRaffleSegue" && (dataSource == "drawn" || dataSource == "customers") {
             return false
         }else{
             return true
@@ -246,7 +327,7 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
 
 extension ViewController: TableViewRaffle{
     func onClickCell(index: Int) {
-        print(raffles[index].description, "\n",raffles[index].cover, "\n", raffles[index].amount)
+        print(raffles[index].description, "\n",raffles[index].sold_amount, "\n", raffles[index].amount)
     }
 }
 

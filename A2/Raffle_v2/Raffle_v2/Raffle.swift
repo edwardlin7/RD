@@ -18,6 +18,7 @@ var amount:Int32
 var price:Int32
 var sold_amount:Int32
 var drawn:Int
+var winner:String
     
 }
 

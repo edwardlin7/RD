@@ -15,13 +15,10 @@ protocol TableViewRaffle {
 class raffleCell: UITableViewCell {
 
     @IBOutlet var raffleCover: UIImageView!
-    
     @IBOutlet var raffleName: UILabel!
-    
     @IBOutlet weak var raffleType: UILabel!
     @IBOutlet weak var winner: UILabel!
     @IBOutlet weak var winnerLabel:UILabel!
-    
     @IBOutlet weak var buyBtn: UIButton!
     @IBOutlet weak var customerName: UILabel!
     
@@ -30,15 +27,14 @@ class raffleCell: UITableViewCell {
         
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        buyBtn.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
+    
+    // Debug function to see spec of a selected cell
     @IBAction func raffleEditBtn(_ sender: Any) {
         cellDelegate?.onClickCell(index: (index?.row)!)
     }
